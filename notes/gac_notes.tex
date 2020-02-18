@@ -1,0 +1,534 @@
+%\pdfoutput=1
+\documentclass[12pt]{article}
+%\documentclass[aps,preprint,onecolumn]{revtex4-1}
+%\documentclass[preprint]{revtex4-1}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[margin =1 in]{geometry}
+%\usepackage{ulem}
+%\usepackage{mathtools}
+
+
+%% Macros
+\def\reals{\mathbb{R}}
+\def\be{\begin{equation}}
+\def\ee{\end{equation}}
+\def\bea{\begin{eqnarray}}
+\def\eea{\end{eqnarray}}
+\def\bml{\begin{mathletters}}
+\def\eml{\end{mathletters}}
+\def\bse{\begin{subequations}}
+\def\ese{\end{subequations}}
+\def\expec{\mathbb{E}}
+\def\exp{\text{exp}}
+\def\Var{\text{Var}}
+\def\e{\text{e}}
+\def\ba{\begin{align}}
+\def\ea{\end{align}}
+
+\begin{document}
+
+\title{A minimal model of gut bacterial cluster dynamics}
+\author{Brandon H. Schlomann}
+%\email{bschloma@uoregon.edu}
+%\affiliation{Department of Physics and Institute of Molecular Biology, University of Oregon, Eugene, Oregon, 97405}
+\date{\today}
+
+
+
+
+\maketitle
+\setlength\parskip{12pt}
+\setlength\parindent{0pt}
+
+We consider a kinetic model of the dynamics of bacterial clusters in the intestine.  The model is non-spatial. For small systems, the main object of the model is a set of cluster sizes, $\{n_j\}$, with $j = 1,2,3,...,M(t)$ and $M(t)$ the number of clusters in the system at time $t$. These small systems are studied via direct stochastic simulation.  In the large system limit, we consider the concentration of clusters of size $n$ denoted by $c_n(t)$.  
+
+The model has 4 rate processes that govern its dynamics:
+
+\begin{enumerate}
+
+\item
+Aggregation: a cluster of size $n$ and another of size $m$ can aggregate to form a cluster of size $n+m$ according to the aggregation kernel $A_{nm}$.
+
+\item
+Fragmentation: a cluster of size $n+m\ge 2$ can break apart into two smaller clusters of size $n$ and $m$ according to the fragmentation kernel $F_{nm}$.
+
+\item
+Growth: a cluster of size $n$ can grow to size $n+1$ due to cell division according to the growth kernel $G_n$. 
+
+\item
+Expulsion: a cluster of size $n$ is removed from the system, according to the expulsion kernel $E_n$, modeling intestinal transport. 
+\end{enumerate}
+
+%\begin{figure}
+
+%\centerline{\includegraphics[width=6in]{clump_dist_test_1}}
+%\caption{Example of gut bacteria and their cluster size distributions.  Each fish is monoassociated with a native Enterobacter species.  The bottom fish was treated for 24 hours with a low dose of an antibiotic, resulting in fewer small clusters. }
+
+%\end{figure}
+
+
+Assembling these processes, the time evolution of the cluster size distribution is given for large systems by the general master equation
+
+\begin{align}
+\dot{c}_n = \text{ }	& \frac{1}{2}\sum_{m=1}^{n} A_{n-m,m}c_{n-m}c_m - c_n\sum_{m=1}^{\infty}A_{n,m}c_m \nonumber\\
+					&+\sum_{m=n}^{\infty} F_{m-n,n}c_{m-n} - \frac{1}{2}\sum_{m = 1}^{n}F_{n-m,m}c_n \nonumber\\[6pt]
+					&+G_{n-1}c_{n-1} - G_nc_n  - E_nc_n 
+\end{align}
+
+
+%\begin{align}
+%\partial_t c_n &= \frac{1}{2}\sum_{m=1}^{n} K_{n-m,m}c_{n-m}c_m - c_n\sum_{m=1}^{\infty}K_{nm}c_m \tag{\text{aggregation}}\\
+%&+\delta_{n1}\sum_{m=1}^{\infty}s_mc_m + s_{n+1}c_{n+1} - s_nc_n \tag{\text{sprouting}}\\[3pt]
+%&+b_{n-1}c_{n-1} - b_nc_n + d_{n+1}c_{n+1} - d_nc_n  \tag{\text{birth + death}}\\[16pt]
+%&-h_nc_n \tag{\text{dispersal}}\\
+%&
+%\end{align}
+
+%\noindent with rate parameters
+
+%\begin{align}
+%K_{nm} &= K\nonumber\\
+%s_n &= sn^{2/3}\nonumber\\
+%b_n &= b\left(1 + \frac{n}{n^*_{b}} + \frac{N}{N^*_{b}}\right)\nonumber\\
+%d_n &= d\left(1 + \frac{n}{n^*_{d}} + \frac{N}{N^*_{d}}\right)\nonumber\\
+%h_n &=  hn^{1/3}
+%\end{align}
+
+%\noindent In the birth and death terms, $n^*_i$ and $N^*_i$ are the scales of local and global regulation, respectively.  As mentioned, we typically focus on only global regulation, setting $n^*_i=0$.  Furthermore, it is often a convenient and appropriate approximation to replace the stochastic birth/death process with deterministic logistic growth for each cluster of size $n$: 
+
+Based on experimental data, we assume the following forms for the rate kernels:
+
+%\begin{itemize}
+%\item
+%Aggregation: we use a generalized product kernel
+%\be
+%A_{n,m} = \alpha(nm)^{\nu_A}.
+%\ee
+%
+%\item
+%Fragmentation: we use a ``chipping'' kernel, in which the only fragementation process that occurs is the breaking off of single cells (``monomers''). We further use a generalized power kernel for the overall rate,
+%
+%\be
+%F_{n,m} = \beta(n+m)^{\nu_F}\delta_{m,1}
+%\ee
+%
+%\item
+%Growth: we use a logistic growth kernel with global carrying capacity, K,
+%\be
+%G_n = rn\left(1-\frac{N}{K}\right)
+%\ee
+%
+%\noindent with $N = \sum_m mc_m$ the total cell density.
+%
+%\item
+%Disperal: we use a generalized power kernel
+
+%\be
+%D_n = \lambda n^{\nu_D}
+%\ee
+%\end{itemize}
+
+\begin{itemize}
+\item
+Aggregation: we use a constant kernel
+\be
+A_{n,m} = \alpha.
+\ee
+
+\item
+Fragmentation: we use a ``chipping'' kernel, in which the only fragmentation process that occurs is the breaking off of single cells (``monomers''). We further use a constant kernel for the overall rate,
+
+\be
+F_{n,m} = \beta\delta_{m,1}
+\ee
+
+\item
+Growth: we use a logistic growth kernel with global carrying capacity, K,
+\be
+G_n = rn\left(1-\frac{N}{K}\right)
+\ee
+
+\noindent with $N = \sum_m mc_m$ the total cell density.
+
+\item
+Expulsion: we use a constant kernel
+
+\be
+E_n = \lambda
+\ee
+\end{itemize}
+%\section*{Continuum formulation}
+
+%\begin{align}
+%\partial_t c(x,t) &= \frac{1}{2}\int_{0}^{x}dy A(y-x,x)c(y-x,t)c(x,t) - c(x,t)\int_{0}^{\infty}dy A(x,y)c(y,t)\nonumber\\[8pt]
+%&+\int_{x}^{\infty}dyF(x,y-x)c(y,t)- \frac{1}{2}c(x,t)\int_0^{x}dy F(x-y,y) \nonumber\\[16pt]
+%&+\partial_x[R(x,t)c(x,t)] -D(x,t)c(x,t) +\delta_K(x,1)\lambda 
+%\end{align}
+
+%\begin{align}
+%\partial_t c_n = \text{ }& \frac{1}{2}\sum_{m=1}^{n} A_{n-m,m}c_{n-m}c_m - c_n\sum_{m=1}^{\infty}A_{nm}c_m \nonumber\\
+%&+\sum_{m=n}^{\infty}F_{n,m-n}c_m - \frac{1}{2}c_n\sum_{m=1}^{n} F_{n-m,m} \nonumber\\[6pt]
+%&+G_{n-1}c_{n-1} - G_nc_n  - D_nc_n 
+%\end{align}
+
+
+%\section*{Asymptotics for $\nu = 0$}
+
+%The mean field equations for the general, discrete GAC model are
+
+\noindent With these choices, the model master equation becomes
+
+%\begin{align}
+%\dot{c}_n = \text{ }& \frac{\alpha}{2}\sum_{m=1}^{n} (n-m)^{\nu_A}m^{\nu_A}c_{n-m}c_m - \alpha n^{\nu_A}c_n\sum_{m=1}^{\infty}m^{\nu_A}c_m \nonumber\\
+%&+\beta(n+1)^{\nu_F}c_{n+1}- \beta n^{\nu_F}c_n + \delta_{n,1}\beta\sum_{m=1}^{n} m^{\nu_F}c_m \nonumber\\[6pt]
+%&+r\left(1-K^{-1}\sum_{m=1}^{\infty} m c_m\right)\left[(n-1)c_{n-1} - nc_n\right]  - \lambda n^{\nu_D}c_n 
+%\end{align}
+
+%\subsection*{Choosing kernel exponents}
+
+%Including the kernel exponents, the general model has eight parameters in total: 4 rates, 1 carrying capacity, and 3 kernel exponents. This is far too many a meaningful comparison to experiments. To begin reducing the number of parameters, we first consider the role of the kernel exponents. 
+
+%Experimental populations typically consist of a small ($< 100$) number of clusters, with one of these being massive (i.e., a gel) and the rest being dominated by individuals and small clusters. Therefore, we might expect only processes involving the massive cluster of size $\mathcal{O}(K)$ to be important for determining phase behavior. For example, dispersal of the single massive cluster will register as large population collapses, while dispersal of any of the remaining clusters will be close to negligible, such that it is only the dispersal rate of clusters of size $\mathcal{O}(K)$ that matters. As such, we might expect a change of dispersal exponent $\nu_D \to nu'_D$ to be approximately equivalent to a rescaling the rate $\lambda \to \lambda K^{\nu'_D/\nu_D}$.
+
+%In this regime, processes involving individuals (clusters of size $\sim 1$) and the massive cluster (of size $\sim K$) determine the fate of the system. Aggregation between the last remaining single cell and the massive cluster drives the system to complete gelation; dispersal of sole massive cluster leads to extinction; and fragmentation of single cells off of the massive cluster is what keeps the system away from this extinction transition.
+
+%Given these observations, we note that the key reactions in the system are governed by the kernel entries
+
+%\be
+%A_{1,K} = \alpha K^{\nu_A},\, F_{K-1,1} = \beta K^{\nu_F},\, \text{and}\, D_K = \lambda K^{\nu_D}
+%\ee
+ 
+%\noindent For each of these terms, changing the exponent $\nu \to \nu'$ is equivalent to rescaling the rate constant by a power of $K^{\nu'/\nu}$. Therefore, the actual values of these exponents are unimportant for the qualitative behaviors of the model in this experimentally-relevant regime. This will not be true for large systems.
+
+%For simplicity, we choose constant kernels: $\nu_A = \nu_F = \nu_D$ = 0. With these choices, the master equation reduces to
+
+%\begin{align}
+%\partial_t c_n = \text{ }& \frac{A}{2}\sum_{m=1}^{n} c_{n-m}c_m - Ac_n M+F(c_{n+1}- c_n) + F\delta_{n,1}M\nonumber\\[6pt]
+%&+r\left(1-\frac{N}{K}\right)\left[(n-1)c_{n-1} - nc_n\right]  - Dc_n 
+%\end{align}
+
+%\begin{align}
+%\partial_t c_n = \text{ }& \frac{A}{2}\sum_{m=1}^{n} c_{n-m}c_m - Ac_n C+F(c_{n+1}- c_n) + F\delta_{n,1}C\nonumber\\[6pt]
+%&+r\left(1-\frac{N}{K}\right)\left[(n-1)c_{n-1} - nc_n\right]  - Dc_n 
+%\end{align}
+
+
+\begin{align}
+\dot{c}_n = \text{ }& \frac{\alpha}{2}\sum_{m=1}^{n} c_{n-m}c_m - \alpha c_n M+\beta(c_{n+1}- c_n) + \beta\delta_{n,1}M\nonumber\\[6pt]
+&+r\left(1-\frac{N}{K}\right)\left[(n-1)c_{n-1} - nc_n\right]  - \lambda c_n. 
+\end{align}
+
+
+\section*{Analytic results for constant kernels}
+
+We will now derive some analytic results for the model with constant kernels in the large system limit. 
+ 
+\subsection*{Moment equations}
+As is often useful in these types of problems, we first derive equations for the zeroth and first moments, which correspond to the density of clusters $(M)$ and the density of total cells $(N)$ respectively. The density of clusters follows
+%\be
+%\dot{M} = -\frac{A}{2}M^2 +(F-D)M - Fc_1
+%\ee
+
+%\be
+%\dot{C} = -\frac{A}{2}C^2 +(F-D)C - Fc_1
+%\ee
+
+%\be
+%\dot{N} = rN\left(1-\frac{N}{K}\right) - DN
+%\ee
+
+\be
+\dot{M} = -\frac{\alpha}{2}M^2 +(\beta-\lambda)M - \beta c_1.
+\ee
+
+\noindent The equation for $M$ is coupled to $c_1$, the concentration of single cells, and so is not closed. The total cell (population) density follows %In terms of $c_1$, the steady state value is
+
+
+%\be
+%M = \frac{(\beta-\lambda)}{\alpha}\left(1 - \sqrt{1- \frac{2\alpha}{\beta}\frac{c_1}{(1-\lambda/\beta)^2}}\right).
+%\ee
+
+%\noindent The sign of the radical is fixed by the notion that the only steady state solution with $c_1=0$ should be the trivial one, with $M=0$.
+
+\be
+\dot{N} = rN\left(1-\frac{N}{K}\right) - \lambda N
+\ee
+
+
+The evolution of $N$ is independent of the cluster size distribution. This is contrary to the intuition that the cluster size distribution modulates how expulsion events impact the total population, and therefore may be a sign that the thermodynamic limit is not valid for comparing to our experimental systems.
+
+The equation for $N$ is closed and has a steady state
+
+\be
+N = K\left(1-\frac{\lambda}{r}\right).
+\ee
+
+\subsection*{Asymptotic, steady state cluster size distribution}
+
+We wish to compute the form of the steady state cluster size distribution $c_n$ for large sizes $n\gg 1$. To do this, we use a generating function approach (Methods). With the kernels chosen as above, the model builds directly off of a reversible polymerization model considered in (Krapivsky and Redner, 1993), adding growth and expulsion terms. Following their approach, we first construct the generating function $g(z,t) = \sum_n z^nc_n$. This generating function satisfies
+
+
+
+%\be
+%\partial_t g = \frac{A}{2}g^2 - AgC + F\left(\frac{g}{z} - c_1\right) - (F+D)g + FC +r\left(1-\frac{N}{K}\right)z(z-1)\partial_zg
+%\ee
+
+\be
+\partial_t g = \frac{\alpha}{2}g^2 - \alpha gM + \beta\left(\frac{g}{z} - c_1\right) - (\beta+\lambda)g + \beta zM +r\left(1-\frac{N}{K}\right)z(z-1)\partial_zg.
+\ee
+
+\noindent Next, we change variables to the shifted generating function $h(z,t) = g(z,t) - g(1,t) = g(z,t) - M(t)$, which satifies
+
+\bea
+\dot{h} 	&=& - \dot{M} + \dot{g} \nonumber\\
+			%&=& -\dot{M} + \frac{\alpha}{2}(h+M)^2 - \alpha (h+M)M + \beta\left(\frac{(h+M)}{z} - c_1\right) \nonumber\\
+			%	&&- (\beta+\lambda)(h+M) + \beta zM +r\left(1-\frac{N}{K}\right)z(z-1)\partial_zh\nonumber\\
+			&=&  \frac{\alpha}{2}M^2 -(\beta-\lambda)M + \beta c_1\nonumber\\
+				&&+ \frac{\alpha}{2}(h+M)^2 - \alpha (h+M)M + \beta\left(\frac{(h+M)}{z} - c_1\right) \nonumber\\
+				&&- (\beta+\lambda)(h+M) + \beta zM +r\left(1-\frac{N}{K}\right)z(z-1)\partial_zh\nonumber\\
+%			&=& \frac{\alpha}{2}h^2 + \beta\frac{1-(1+\beta^{-1}\lambda) z}{z} h
+\dot{h}		&=& \frac{\alpha}{2}h^2 + \beta \left[\frac{(1-z)}{z} - \frac{\lambda}{\beta}\right]h + \beta\frac{(1-z)^2}{z}M - r\left(1-\frac{N}{K}\right)z(1-z)\partial_zh.
+\eea
+
+Note that the $c_1$ terms have been eliminated. In the steady state, this reduces to the single ODE
+%\be
+%r\left(1-\frac{N}{K}\right)z(z-1)\frac{dg}{dz} = -\frac{\alpha}{2}g^2 + \alpha gM - \beta\left(\frac{g}{z} - c_1\right) + (\beta+\lambda)g - \beta M
+%\ee
+
+\be
+r\left(1-\frac{N}{K}\right)z(1-z)\frac{dh}{dz} = \frac{\alpha}{2}h^2 + \beta \left[\frac{(1-z)}{z} - \frac{\lambda}{\beta}\right]h + \beta\frac{(1-z)^2}{z}M. 
+\ee
+
+\noindent Using the result from the moment equation for cell density, $r(1-N/K) = \lambda$, we eliminate the growth rate to obtain
+
+\be
+\lambda z(1-z)\frac{dh}{dz} = \frac{\alpha}{2}h^2 + \beta \left[\frac{(1-z)}{z} - \frac{\lambda}{\beta}\right]h + \beta\frac{(1-z)^2}{z}M. 
+\ee
+
+Following from a fundamental result for generating functions, there is the correspondence between the behavior of $h(z)$ in the limit $z\to 1$ and $c_n$ in the limit $n\to \infty$ (Methods). Specifically, suppose $c_n$ has a power law tail with exponent $\mu > 1$. Then we have the correspondence (Methods)
+
+\be
+h(z) \sim (1-z)^{\mu-1} \Longleftrightarrow c_n \sim n^{-\mu}.
+\ee
+
+
+
+Therefore, we wish to solve the steady state equation for $h$ in the limit $z\to 1$, supplemented with the initial condition that $h'(0) = N$, a constraint that follows from the definition of the generating function. Defining $\epsilon = 1- z$, the differential equation for $h$ becomes
+
+\be
+\frac{dh}{d\epsilon}= -\frac{\alpha}{2\lambda\epsilon(1-\epsilon)}h^2 - \left( \frac{\beta}{\lambda}\frac{1}{(1-\epsilon)^2} - \frac{1}{\epsilon(1-\epsilon)}\right)h - \frac{\beta M\epsilon}{\lambda(1-\epsilon)^2}.
+\ee
+
+\noindent This equation is of the Riccati form, and so it's possible that it can be solved exactly. However, we'll just focus on trying to pull out the large-size asymptotics of the cluster size distribution. This limit corresponds to $\epsilon \to 0$ (see Methods section). By construction, $h\to 0$ as $\epsilon\to 0$; we want to calculate how it goes to zero.  The question then, is which terms are relevant in this limit? The leading order term on the right hand side is of order $h/\epsilon$: 
+
+\be
+\frac{dh}{d\epsilon}\approx \frac{h}{\epsilon},
+\ee
+
+\noindent which leads quickly to the solution
+
+
+\be
+h(\epsilon) \sim N\epsilon.
+\ee
+
+%\noindent In the Additional Calculations section, we solve this equation to increasing orders in $\epsilon$ and find that the scaling behavior is unchanged. 
+\noindent This then means that the steady state cluster size distribution goes as 
+
+\be
+c_n \sim n^{-2}.
+\ee
+
+\noindent Note that none of the rate parameters appear in the leading order differential equation. This suggests that there is only one steady state phase, but it's possible that this breaks down when higher order terms are included in the solution.
+
+
+\subsection*{Mapping to evolutionary dynamics}
+
+Power law size distributions with slope -2 also arise in evolutionary dynamics models of neutral mutations in expanding populations. Specifically, cluster size is analogous to allele frequency, and fragmentation is analogous to neutral mutation. Consider a reduced version of the kinetic model that only includes exponential growth and fragmentation:
+
+
+\be
+\dot{c}_n = \beta(c_{n+1}- c_n) + \beta\delta_{n,1}M +r\left[(n-1)c_{n-1} - nc_n]\right. 
+\ee
+
+\noindent The evolutionary interpretation of this model is an exponentially growing population where the probability of a mutation is the same for each family, not each individual. While artificial, it turns out that this assumption doesn't change the scaling.
+
+Following the same procedure as above, the zeroth and first moment equations are
+
+\be
+\dot{M} = \beta(M-c_1),
+\ee
+
+\be
+\dot{N} = rN.
+\ee
+
+The generating function $g(z,t) = \sum_n z^nc_n$ follows
+
+\be
+\partial_t g = \beta\left(\frac{g}{z} - c_1\right) - \beta g + \beta zM +rz(z-1)\partial_zg.
+\ee
+
+The modified generating function $h(z,t) = g(z,t) - g(1,t) = g(z,t) - M(t)$ follows
+
+\bea
+\partial_t h 	&=& - \partial_t M + \partial_t g \nonumber\\
+			&=&  -\beta(M-c_1) + \beta\left(\frac{(h+M)}{z} - c_1\right) - \beta(h+M) + \beta zM +rz(z-1)\partial_zh\nonumber\\
+		&=& \beta \frac{(1-z)}{z}h + \beta\frac{(1-z)^2}{z}M - rz(1-z)\partial_zh.
+\eea
+
+Changing variables to $\epsilon = 1-z$,
+
+\be
+\partial_t h = \beta \frac{\epsilon}{1-\epsilon}h + \beta\frac{\epsilon^2}{1-\epsilon}M + r\epsilon(1-\epsilon)\partial_{\epsilon}h.
+\ee
+
+\noindent Since growth is exponential, there is no steady state, but we can solve this PDE in the limit $\epsilon \to 0$. To leading order in $\epsilon$, we just have the derivative term,
+
+\be
+\partial_t h \approx r\epsilon\partial_{\epsilon}h.
+\ee
+
+This equation is easily solved by separation of variables: let $h(\epsilon,t) \equiv E(\epsilon)T(t)$. Then, we have
+
+\be
+\frac{1}{T}\frac{dT}{dt} = \frac{r\epsilon}{E}\frac{dE}{d\epsilon} = \text{ const.}
+\ee
+
+\noindent Since we know that the population grows exponentially with growth rate $r$, the separation constant must be $r$. This leads to an ODE for the $\epsilon$ dependence
+
+\be
+\frac{dE}{d\epsilon} = \frac{E}{\epsilon},
+\ee
+
+\noindent exactly the same as equation as we found for the steady state solution of the full model (equation 16). The solution is
+
+\be
+E \sim \epsilon,
+\ee
+
+\noindent which means that, just like in the full kinetic model above,
+
+\be
+c_n \sim n^{-2}.
+\ee
+
+\noindent  From this calculation, we conclude that growth and fragmentation are the fundamental processes that determine the scaling of the cluster size distribution in the full model. The other processes in the full model are still important, however, because they allow for a well defined, non-trivial steady state to be reached. A carrying capacity allows the cell density to reach a steady state. Aggregation allows, in the thermodynamic limit, non-zero concentrations of sizes larger than $K$, which would otherwise have no mechanism to be generated. It's also possible that, like the non-living counterpart to the present model $(r=\lambda=0)$, there exists a critical aggregation rate above which a steady state no longer exists (Krapivsky and Redner (1993)); this remains unclear however. Finally, expulsion isn't required to reach a steady state, but does allow for transition to extinction, which is experimentally relevant.
+
+Interestingly, the expulsion process can be interpreted in an evolutionary context as the abrupt extinction of a lineage, due, for example, to a rapid fluctuation in environmental conditions that makes a genotype unfit. The cluster model with expulsion can therefore perhaps be interpreted as a model of evolution in a fluctuating environment with a sharp response function. The evolutionary interpretation of aggregation is a bit more bizarre. Aggregation corresponds to a coalescing of lineages, but in real, forward time. In other words, all members of a genotype instantly converting to another. 
+
+\subsection*{Estimates of the extinction transition}
+
+%\subsubsection*{High $\beta$ limit}
+%For high $\beta$, populations are dispersed and the deterministic limit is applicable. From the moment equation for the total population we get the steady state abundance
+
+%\be
+%	N = K\left(1- \frac{\lambda}{r}\right)
+%\ee
+
+%\noindent from which follows the extinction criterion $\lambda/r = 1$. Intuitively this makes sense: in the absence of large fluctuations due to the expulsion of large aggregates, extinction occurs when growth cannot outpace expulsion.
+
+%\subsubsection*{Low $\beta$ limit}
+%For low $\beta$, populations condense in to large aggregates which, through expulsion, generate large fluctuations in abundance. As a result, the deterministic approximation breaks down. 
+Near the extinction transition, the system fluctuations between a state of one cluster and a state of 2 or more clusters. To probe the transition, we will therefore consider a toy model with a state space of just two clusters, which can take on two sizes: ``small'', representing a single cell, and ``large'', representing a multicellular cluster capable of fragmenting. We label the state of system with a pair of binary variables encoding the presence/absence of the $\{\text{small, }\text{large}\}$ clusters respectively. There are 3 relevant states of the system: $\{1,0\}$, $\{0,1\}$, and $\{1,1\}$, which we labels 1, 2, and 3 respectively. To probe the extinction transition, we compute when the probability of have just one cluster in the system goes to 1, at which point we assume that the system will go extinct for any non-zero $\lambda$. Using the same variable conventions as above, the probability distribution over this simplified state space is governed by
+
+\bea
+	\dot{P}_1(t) &=& \lambda P_3 - rP_1\\
+	\dot{P}_2(t) &=& rP_1 + (\lambda + \alpha)P_3 - \beta P_2\\
+	\dot{P}_3(t) &=& \beta P_2 - (2\lambda + \alpha) P_3
+\eea
+
+\noindent We then solve for the steady state and look at when $P_1 + P_2 \to 1$, or equivalently when $P_3 \to 0$. We find that
+
+\be
+	P_3 = \frac{1}{1+\lambda/r + (2\lambda+\alpha)/\beta} 
+\ee
+
+\noindent Using this expression, we can derive simple estimates of the extinction boundary is various limits. For dispersed systems driven to extinction by reducing growth, such as planktonic populations treated with lethal levels of antibiotics, we can ignore the $(2\lambda + \alpha)/\beta$ term and infer that the transition to extinction occurs approximately when
+
+\be
+\frac{\lambda}{r} \approx 1,
+\ee
+
+\noindent or when growth becomes as slow as expulsion. This is equivalent to the prediction of the deterministic theory given above, for which the total population density goes to zero when $r = \lambda$.  That the deterministic and stochastic theories agree here reflects the fact that dispersed populations exhibit only small fluctuations in abundance compared to aggregated populations, which can abruptly lose massive clusters.
+
+In the opposite limit of strongly aggregated, fast growing populations, we can ignore the $\lambda/r$ term and infer that the extinction transition occurs when  
+
+\be
+	\frac{\beta}{2\lambda + \alpha} \approx 1.
+\ee
+
+\noindent This transition is qualitatively intuitive, in the sense that we expect a transition at the crossover between the timescale of generating clusters and the timescale of losing clusters, but cannot be derived from the deterministic theory because the equation of the density of cluster $M$ is not closed.
+
+...............
+By analogy, test this hypothesis:
+\be
+\frac{2\lambda + \alpha}{\beta} \approx -\ln f
+\ee
+
+
+................
+
+\subsection*{Open problems}
+\begin{enumerate}
+	\item 
+	In stochastic simulations of the full cluster process, and also in experimental data, we observe the cluster size distribution becoming shallow for more aggregated populations. This is likely a finite size effect---a depletion of mid-sized clusters in favor of a single massive cluster---but is probably also driven by the aggregation process. Can we quantitatively understand this effect?
+	\item 
+	Can we construct a well-controlled mapping from cluster kinetics to total population dynamics, including for finite populations? Specifically, we previously studied a class of models of logistic growth coupled to random catastrophes to describe population dynamics in the gut in the presence of expulsion. This model has 4 parameters: ($r$, $K$, $\lambda$, $f$), where the first 3 parameters are the same as in the cluster model and $f$ is the fraction of the population remaining after collapse. Specifically, the model is specified by a stochastic differential equation 
+	\be
+		dX_t = rX_t\left(1-\frac{X_t}{K}\right) - (1-f)X_{t^{-}}d\Pi_t(\lambda)
+	\ee
+	
+	\noindent where $X_t$ is the population abundance and $\Pi_t(\lambda)$ is a standard Poisson process with rate $\lambda$. What is the mapping from cluster model parameters ($\alpha$, $\beta$, $r$, $\lambda$, $K$) to collapse fraction, $f$? In principle, one could try to construct a collapse model with $f$ a random variable characterized by a distribution, $P(f)$ $=$ $P($a cluster constitutes a fraction $1-f$ of the population$)$. Perhaps a simpler construction would be to compute a typical collapse fraction, $\langle f \rangle$ or $\langle \ln f \rangle$. 
+	
+	\item 
+	With a model of the total abundance dynamics, where is the extinction transition? For collapse model described above, we previously showed that extinction occurs at
+	\be
+		\frac{\lambda\ln f}{r} = -1.
+	\ee
+	
+	\noindent Given a mapping from cluster model parameters to $f$, does this criterion accurately reproduce numerical abundance phase diagrams?
+	
+\end{enumerate}
+
+\subsection*{Methods: asymptotic distribution from generating function}
+
+Suppose the cluster size distribution has a power law tail $c_n \sim n^{-\mu}$ with $\mu > 1$ so $\sum_n c_n$ converges. The connection to the generating function $g(z) = \sum_n z^n c_n$ is the following. First, let's move to a continuum approximation and replace the generating function with a Laplace transform:
+
+\be
+g(s) = \int dn\, c(n)\,  \e^{-sn} 
+\ee
+
+\noindent with $z = \exp(-s)$. With this new notation, the limits $z \to 1$ and $s \to 0$ coincide. We re-write this integral as 
+
+\bea
+g(s) 	&=& \int dn \, c(n) \, \left(1-\left(1-\e^{-sn}\right)\right)\nonumber\\
+		&=& \int dn \, c(n) - \int dn \, c(n)\left(1-\e^{-sn}\right)\nonumber\\
+		&=& M - \int dn \, c(n)\left(1-\e^{-sn}\right).
+\eea
+
+\noindent In the second integral, since $s \ll 1$, the integrand will be close to zero approximately until $n\sim 1/s$. At that point, we may use the assumed scaling form of $c_n$. We then approximate the exponential cutoff function by simply replacing the lower bound of the integral with $1/s$:
+
+\be
+g(s) - M \sim -\int_{1/s}^{\infty} dn \, n^{-\mu} = s^{\mu-1}.
+\ee
+
+So, using a shifted generating function $h(z) = g(z) - g(1) = g(z) - M$, we see that there is a direct correspondence
+
+\be
+h(s) \sim s^{\mu-1} \Longleftrightarrow c_n \sim n^{-\mu},
+\ee
+
+\noindent or, in terms of the discrete definition of the generating function,
+
+\be
+h(z) \sim (1-z)^{\mu-1} \Longleftrightarrow c_n \sim n^{-\mu}.
+\ee
+
+
+
+
+\end{document}
