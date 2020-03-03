@@ -420,6 +420,65 @@ c_n \sim n^{-2}.
 
 Interestingly, the expulsion process can be interpreted in an evolutionary context as the abrupt extinction of a lineage, due, for example, to a rapid fluctuation in environmental conditions that makes a genotype unfit. The cluster model with expulsion can therefore perhaps be interpreted as a model of evolution in a fluctuating environment with a sharp response function. The evolutionary interpretation of aggregation is a bit more bizarre. Aggregation corresponds to a coalescing of lineages, but in real, forward time. In other words, all members of a genotype instantly converting to another. 
 
+\subsection*{Heuristic calculation that gives a different answer}
+Start from the moment equations:
+
+\be
+\dot{M} = \beta(M-c_1),
+\ee
+
+\be
+\dot{N} = rN.
+\ee
+
+Ignoring the $c_1$ term, we then have
+
+\be
+N(t) \sim M^{r/\beta}
+\ee
+
+Following the derivation for the Yule-Simons process (see, e.g., arXiv:1907:03891), we note that a single cell that fragmented off of another cluster at time $t'$, will have a size at time $t$ of
+
+\be
+n(t,t') \sim \e^{r(t-t')}, 
+\ee
+
+or in terms of a scaled size, or frequency, $n^* = n/e^{rt}$,
+
+\be
+n^* \sim M(t')^{-r/\beta}.
+\ee
+
+Interpreting $M$ as a rank, we recognize Ziph's law relating frequency and rank, which implies a probability density
+
+\be
+p(n^*) \sim (n^*)^{-(1 + \beta/r)}.
+\ee
+
+\subsubsection*{Generalization to other forms of chipping}
+If we generalize to a size-dependent fragmentation rate of the form $F_{nm} = \delta_{m,1}\beta n^{\nu}$, the equation for the first moment is of the form
+
+\be
+\dot{M} = \beta(M_{\nu} - c_1)
+\ee
+
+with fractional moment $M_{\nu}$ defined as
+
+\be
+M_{\nu} = \sum_n n^{\nu}c_n.
+\ee
+
+This form contains as special cases the constant kernel, $\nu= 0$, and the classic Yule-Simons process, $\nu=1$. For this latter case we have $M \sim N$ and so
+
+\be
+n^* \sim M^{-1},
+\ee
+
+leading to
+
+\be
+p(n^*) \sim (n^*)^{-2}.
+\ee
 \subsection*{Estimates of the extinction transition}
 
 %\subsubsection*{High $\beta$ limit}
