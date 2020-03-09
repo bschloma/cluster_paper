@@ -468,13 +468,25 @@ with fractional moment $M_{\nu}$ defined as
 M_{\nu} = \sum_n n^{\nu}c_n.
 \ee
 
-This form contains as special cases the constant kernel, $\nu= 0$, and the classic Yule-Simons process, $\nu=1$. For this latter case we have $M \sim N$ and so
+This form contains as special cases the constant kernel, $\nu= 0$, and the classic Yule-Simons process, $\nu=1$. For this latter case we have $M \sim N$, but the growth rate of a cluster is reduced by the fragementation rate, since cells can be lost,
 
 \be
-n^* \sim M^{-1},
+n(t,t') \sim \e^{(r-\beta)(t-t')},
+\ee
+
+so the scaled size scales as
+
+\be
+n* \sim M^{1-\beta/r}
 \ee
 
 leading to
+
+\be
+p(n^*) \sim (n^*)^{-\left(1+\frac{1}{1-\beta/r}\right)}.
+\ee
+
+For rare fragmentation events, $\beta \ll r$, this limits to
 
 \be
 p(n^*) \sim (n^*)^{-2}.
