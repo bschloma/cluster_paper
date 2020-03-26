@@ -18,12 +18,13 @@ tot_pop_thresh = 0*100;
 marker_cell = {'o','o','o','o','o','o','o'};
 color_cell = {[0.8392 0.3373 0.2353],[0.8000 0.3137 0.4078],[0.9294 0.5176 0.2510], ...
     [0.4157 0.3608 0.6196], [0.6353 0.8000 0.2431],  [0.4 0.4 0.4], [0.1176 0.5765 0.7765], [0 1 1], [1 0 1]};
-marker_size = 24;
+marker_size = 18;
 line_width = 2;
 
 % load data
 if ~exist('T','var')
-    T = readtable('/c/Users/Brandon/Documents/Gutz/clusters/cluster_paper/data/combined_cluster_sizes.xlsx');
+    %T = readtable('/c/Users/Brandon/Documents/Gutz/clusters/cluster_paper/data/combined_cluster_sizes.xlsx');
+    T = readtable('C:\Users\Brandon\Documents\Gutz\clusters\cluster_paper\data\combined_cluster_sizes.xlsx');
 end
 
 cluster_sizes = table2array(T(:,4:end));
@@ -101,12 +102,14 @@ end
 
 %% plot
 
-figure; hold on;
+figure('position',  [488.0000   41.8000  915.4000  740.8000]); hold on;
 legend_cell = cell(1,numel(strain_ids));
-
+subplot_inds = [1,2,3,4,5,7,6,8,9];
+title_cell = {'\it{A. veronii}', '\it{A. caviae}', '\it{E. cloacae}', '\it{Plesiomonas}',...
+    '\it{P. mendocina}', '\it{V. cholerae} (20)','\it{V. cholerae} (36)','\it{V. cholerae} (20) {\Delta}che', '\it{V. cholerae} (20) {\Delta}mot'};
 for s = 1:numel(strain_ids)
     
-    subplot(3,3,s); hold on;
+    subplot(3,3,subplot_inds(s)); hold on;
     
     this_prob_dens_mat = prob_dens_cell{s};
     this_tot_pop = tot_pop_cell{s};
@@ -116,7 +119,11 @@ for s = 1:numel(strain_ids)
     this_prob_dens_mat(this_tot_pop < tot_pop_thresh,:) = [];
     
     this_mean_prob_dens = log10(nanmean(this_prob_dens_mat));
-    this_std_prob_dens = log10(nanstd(this_prob_dens_mat));
+    this_std_prob_dens = zeros(1,numel(this_mean_prob_dens));
+    for n = 1:numel(this_std_prob_dens)
+        this_std_prob_dens(n) = log10(nanstd(this_prob_dens_mat(:,n)))./sqrt(sum(~isnan(this_prob_dens_mat(:,n))));
+    end
+    %this_std_prob_dens = log10(nanstd(this_prob_dens_mat));
     this_x = bins(~isinf(this_mean_prob_dens));
     this_sigy = this_std_prob_dens(~isinf(this_mean_prob_dens));
     this_y = this_mean_prob_dens(~isinf(this_mean_prob_dens));
@@ -130,7 +137,7 @@ for s = 1:numel(strain_ids)
     legendcell{s} = strains{strain_ids(s)};
 
 
-    set(gca,'fontsize',24,'linewidth',4,'xscale','log','yscale','linear','xtick',[1e0 1e2 1e4],'xminortick','off')
+    set(gca,'fontsize',16,'linewidth',4,'xscale','log','yscale','linear','xtick',[1e0 1e2 1e4],'xminortick','off')
     if l_scale
         %  xlabel('scaled cluster size','fontsize',24)
     else
@@ -139,14 +146,15 @@ for s = 1:numel(strain_ids)
     %ylabel('log_{10}p(n)','fontsize',24)
     %legend(legendcell,'location','ne','fontsize',16);
     axis([.1 1e4 -10 0])
-    title(strains{strain_ids(s)},'fontsize',24);
+    %title(strains{strain_ids(s)},'fontsize',16);
+    title(title_cell{strain_ids(s)},'fontsize',16);
 
     if s==8
-        xlabel('n (number of cells)','fontsize',24)
+        xlabel('n (number of cells)','fontsize',16)
     end
     
     if s==4
-        ylabel('log_{10}p(n)','fontsize',24)
+        ylabel('log_{10}p(n)','fontsize',16)
     end
     
     % -2 line
