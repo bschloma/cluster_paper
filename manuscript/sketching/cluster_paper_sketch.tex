@@ -1,0 +1,486 @@
+%\pdfoutput=1
+%\documentclass[12pt]{article}
+\documentclass[aps,pre,twocolumn]{revtex4-1}
+%\documentclass[preprint]{revtex4-1}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[margin =1 in]{geometry}
+%\usepackage{ulem}
+%\usepackage{mathtools}
+
+
+%% Macros
+\def\reals{\mathbb{R}}
+\def\be{\begin{equation}}
+\def\ee{\end{equation}}
+\def\bea{\begin{eqnarray}}
+\def\eea{\end{eqnarray}}
+\def\bml{\begin{mathletters}}
+\def\eml{\end{mathletters}}
+\def\bse{\begin{subequations}}
+\def\ese{\end{subequations}}
+\def\expec{\mathbb{E}}
+\def\exp{\text{exp}}
+\def\Var{\text{Var}}
+\def\e{\text{e}}
+\def\ba{\begin{align}}
+\def\ea{\end{align}}
+
+\begin{document}
+
+%\title{Robust statistics of gut bacterial cluster sizes}
+\title{Active fragmentation generates extreme statistics of gut bacterial cluster sizes}
+\author{Brandon H. Schlomann}
+%\email{bschloma@uoregon.edu}
+%\affiliation{Department of Physics and Institute of Molecular Biology, University of Oregon, Eugene, Oregon, 97405}
+\date{\today}
+
+%\begin{abstract}
+%	In soft materials such as colloidal suspensions, emulsions, and polymer gels, the distribution of cluster sizes often reflects general properties of the underlying kinetics, resulting in disparate systems sharing common statistical features. Recent experiments suggest that the gut microbiome can be thought of as a type of living suspension of three-dimensional bacterial clusters, raising the question as to whether this principle of soft matter physics can be used to understand diverse intestinal ecosystems. Analyzing imaging-derived data on cluster sizes for several different bacterial strains in the larval zebrafish gut, we find a common, broad size distribution that decays approximately as $p(n) \sim n^{-2}$ over multiple decades, and then becomes shallower in a species-dependent manner. We argue that this form of the size distribution arises from a Yule-Simons-type process in which bacteria grow within clusters and can escape from them, establishing a quantitative connection between gut bacteria and evolutionary dynamics models common in population genetics. We then explore extensions of this model and deduce a model class that robustly generates size distributions consistent with the data. Together, these results point to the existence of general, biophysical principles governing the spatial organization of the gut microbiome.  
+% \end{abstract}
+\begin{abstract}
+	Recent experiments suggest that the gut microbiome can be thought of as a type of living suspension of three-dimensional bacterial clusters, with the degree of aggregation of particular species having important consequences for intestinal population dynamics and host-microbe interactions.  However, a theory of how bacterial-scale dynamics determine global cluster size distributions is lacking. Such a theory would enable researchers to infer hidden aspects of microbiome dynamics by measuring this size distribution, which has become increasingly feasible in a variety of systems. Analyzing imaging-derived data on cluster sizes for several different bacterial strains in the larval zebrafish gut, we find a common family of broad size distributions that decay approximately as power law $p(n)\sim n^{-\mu}$ over multiple decades with exponents $\mu\approx 2$, and then become shallower in a strain-dependent manner. We argue that this form of the size distribution arises from a Yule-Simons-type process in which bacteria grow within clusters and can escape from them, drawing an analogy between gut bacteria and evolutionary dynamics. We deduce a model class that robustly generates size distributions consistent with the data by tuning a single, strain-dependent parameter. Together, these results point to the existence of general, biophysical principles governing the spatial organization of the gut microbiome that may be useful for inferring fast-timescale dynamics that are otherwise inaccessible.  
+\end{abstract}
+
+\maketitle
+\setlength\parskip{12pt}
+\setlength\parindent{0pt}
+
+\section{Introduction}
+Trillions of bacteria inhabit the gastrointestinal tracts of humans and other animals, where they make up some of densest and most diverse microbial ecosystems on Earth. Two central problems concerning these so-called gut microbiota are currently the subject of intense investigation: (1) the determination of microbiota composition---why certain species are more prevalent than others---and (2) understanding the pathogenic and beneficial potential these microbes have on their animal hosts. For both of these problems, the spatial organization of gut bacteria is thought to be an important mediator. In both macroecological and non-gut microbial systems, the spatial organization of organisms is well known to impact both intra- and inter-species interactions [REFs]. Further, within the gut, aspects of spatial organization such as proximity of bacteria to the epithelial boundary can determine the strength of host-microbe interactions [REFs]. Despite these important roles, the spatial organization of bacteria within the intestine remains poorly understood.
+
+Recent advances in the ability to image gut microbial communities in model animals have begun to elucidate some features of bacterial spatial organization common to multiple host species [REFs]. Bacteria in the gut appear to exist largely within three-dimensional, multicellular aggregates, often encased in mucus, whose size range can span several orders of magnitude. This type of spatial structure has been observed in mice, fruit flies, zebrafish, and in human fecal samples [REFs]. However, a thorough understanding of how these structures are generated and their size statistics is lacking. 
+
+In contrast to these living systems, powerful theories exist for non-living materials such as colloidal suspensions, emulsions, and polymer gels that connect general features of microscopic dynamics to the global distribution of cluster sizes and large-scale material properties [REFs]. One example is Ostwald ripening, found in many different emulsions, where small particles condense onto the surface of larger ones to minimize surface tension, leading asymptotically to a universal stationary size distribution [REF]. This type of relationship can, in some cases, be analyzed in the reverse direction: presented with an experimentally-measured size distribution that resembles the Ostwald ripening distribution, one could infer that condensation dynamics and surface tension are likely key features of the system.  In these types of kinetics-statistics relationships, there is often a trade-off between the generality of the relationship and the degree to which it can be inverted. For example, there are many stochastic processes that can generate so-called $1/f$ noise---fluctuations with a $1/f$ frequency distribution---making the relationship quite general, but this limits what one can learn about a system just by observing this noise pattern [REF]. As a converse example, in systems with exponential size distributions, the characteristic size can provide insight into microscopic dynamics, as is the case, for example, in protein aggregates involved in chemotaxis signalling [wingreen paper].  
+
+In this spirit, we investigated the distribution of gut bacterial cluster sizes. In this case, we anticipated that establishing any type of quantitative relationship between bacterial kinetics and global size distributions would be useful: the presence of truly ``universal'' size distributions might enable predictions of cluster size statistics across diverse host species, including humans, while system-specific size distributions might facilitate the inference of dynamical parameters from static measurements of cluster sizes. Through analysis of data from larval zebrafish, we found a relationship that falls between the two extremes. As detailed below, we identified a minimal kinetic model that robustly generates the size distributions of diverse bacterial strains by tuning a single parameter: the rate at which bacteria escape from clusters. Due to the basic and general nature of the model's assumptions, we predict that this family of cluster size distributions will manifest in essentially all intestines, and encourage quantitative size measurements in host organisms where measurements are possible. Further, because of the tune-ability of the distribution, we believe that the key dynamical parameters can be reliably inferred from cluster size measurements, which would enable insight into bacterial-scale dynamics that are otherwise impossible to observe. 
+
+\begin{figure*}%[h!]
+	\centerline{
+		\includegraphics[width = 6 in]{C:/Users/Brandon/Documents/Gutz/clusters/cluster_paper/figures/fig1-data/all_clusters_prob_dens_subplots_pool.png}}
+	\caption{Caption.}{more caption}
+	\label{fig:data-fig}
+\end{figure*}
+
+
+
+
+\section{Background on the data}
+Here, we analyze previously-generated data sets of gut bacterial cluster sizes in larval zebrafish [REFs]. In these experiments (performed by some of the authors), zebrafish are reared devoid of any microbes, or “germ-free”, and then mono-associated with a single, fluorescently labelled bacterial species. The full intestines of live hosts are then imaged with light sheet fluorescence microscopy [REFs]. The rapid image acquisition possible with this technique enables reliable identification and enumeration of bacterial cells in the gut through computational image analysis [REF]. Single bacterial cells and multicelluar aggregates are identified separately, and then the number of cells per multicellular aggregate are estimated by dividing the total fluorescence intensity of the aggregate by the mean intensity of single cells [REF]. The output of this analysis is then a list of bacterial cluster sizes (we define single cells as clusters of size 1) and positions within each fish. 
+
+
+
+We created a dataset that combines lists of cluster sizes from 3 different studies [biophysJ,PNAS,Plos2020], containing data on 9 different bacterial strains. These strains and studies are summarized in Table X. Seven of the strains were previously isolated from healthy zebrafish, and the remaining two are genetically engineered knockout mutants of one of the native strains, \textit{Vibrio} ZWU0020, with knockouts in motility (stator protein deletion $\Delta$\textit{pomA}$\Delta$\textit{pomB}) and chemotaxis (kinase deletion $\Delta$\textit{cheA}), described in [Motaxis]. All strains are of the Proteobacteria phylum [Wiles-mBio].
+
+In all of these studies, it was observed that while the formation of 3D aggregates was common across the different types of bacteria, strains differed in the degree of aggregation, with some retaining larger fractions of individual, planktonic cells, than others. This variation in aggregation is typically quantified by computing metrics like the fraction of the population contained in planktonic cells, the average cluster size, and the total number of clusters. The relationship between aggregation and location along the gut was explored in [biophysJ]. In another study, [ABX], the distribution of clusters sizes was measured for one of the strains in Table X, \textit{Enterobacter} ZOR0014. This study introduced a stochastic simulation model of bacterial cluster kinetics that, when parameterized with separate measurements, quantitatively reproduced the experimentally measured clusters size distribution. However, a theoretical understanding of the form of this distribution was lacking. Furthermore, it was unclear whether this size distribution was unique to  \textit{Enterobacter} ZOR0014, or if other strains exhibited similar distributions. Here, we address both of these issues. 
+
+
+\section{Results}
+\subsection{Different bacterial species have qualitatively similar cluster size distributions within the larval zebrafish intestine}
+
+We performed a meta-analysis of gut bacterial cluster sizes measured in three previous studies [REFs]. We computed the probability density of cluster sizes, $p(n)$, for each animal using logarithmically-spaced bins. Sizes were rounded up to integer values. Log$_{10}$-transformed distributions for individual animals are shown as small circles connected by lines in Fig. \ref{fig:data-fig}, with each panel corresponding to a different bacterial strain. To estimate an underlying probability distribution for each strain given these replicates, we pooled the clusters sizes from different animals and estimated a normalized probability density using the same bins as for individual animals. This pooled distribution is shown as the large circles in Fig. \ref{fig:data-fig}. Due to the nature of how pooling deals with low-cluster-number systems, the pooled distribution appears below much of the host-host spread (Methods). However, in stochastic simulations of models with known analytic solutions in the large-system limit, we found that pooling more accurately reproduces these results than does averaging individual distributions (Supp Fig). Error bars on the pooled distribution represent Poisson noise of counts within each bin (Methods). 
+
+%As discussed in the Methods section, within each bin this pooling approach favors animals with the largest number of clusters, which also tend to have the steepest probability distributions. Therefore, the pooled distribution is consistently at the bottom of the spread across individuals. Alternatively, averaging each individual $\log p(n)$ places the average distribution more symmetrically within the spread (Supp Fig). However, by simulating models for which large-system analytic solutions can be obtained, we found that the pooling method agrees better with these analytic results than the averaging method. The differences between these methods are discussed further in the Methods section. 
+
+
+
+
+We find broad distributions across all strains known to reliably form aggregates. For comparison, for each strain we overlay a dashed line representing $p(n) \sim n^{-2}$, with the vertical offset fixed to the first bin’s probability density. Strains vary in their deviation from this line. Both \textit{Aeromonas} ZOR0001 and \textit{Aeromonas} ZOR0002 follow this line quite closely, while highly aggregated strains, such as \textit{Enterobacter} ZOR0014, have a large-size tail that decays more slowly. At the other end of the spectrum, the notable \textit{Vibrio} ZWU0020, which exists almost entirely as highly motile, planktonic cells [REFs], has a distribution that falls below the $n^{-2}$ line. However, mutant versions of \textit{Vibrio} that lack chemotaxis or motility (Fig \ref{fig:data-fig}, bottom row) exhibit enhanced aggregation [Motaxis], resulting in shallower size distributions that closely resemble other, native bacteria, such as \textit{Aeromonas} ZOR0001 and \textit{Aeromonas} ZOR0002.  
+
+\begin{figure}%[h!]
+	\centerline{
+		\includegraphics[width = 3 in]{C:/Users/Brandon/Documents/Gutz/clusters/cluster_paper/figures/one-axis-data_fig/one-axis-data_fig.pdf}}
+	\caption{Caption.}{more caption}
+	\label{fig:one-axis-data-fig}
+\end{figure}
+
+Together, these observations suggest that generic processes, rather than strain-specific ones, largely govern this aspect of spatial organization within the intestine. To test this idea, we sought to explore the space of kinetic models that contain processes known from time-lapse imaging to occur in the larval zebrafish gut [REFs] and to identify the requirements for generating cluster size distributions consistent with the data. 
+
+ \begin{figure*}%[h!]
+	\centerline{
+		\includegraphics[width = 6 in]{C:/Users/Brandon/Documents/Gutz/clusters/cluster_paper/figures/correspondance_fig/correspondance_fig.pdf}}
+	\caption{Caption.}{more caption}
+	\label{fig:correspondance-fig}
+\end{figure*}
+
+\subsection{Simplified bacterial cluster dynamics are analogous to classic population genetics models}
+Previous time-lapse imaging of bacteria in the zebrafish intestine revealed four core processes that can alter bacterial cluster sizes: (1) clusters can increase in size due to cell division, a process we refer to as ``growth''; (2) clusters can decrease in size as bacteria break out of them, a process we refer to as ``fragmentation'' and believe to be linked to the cell division process; (3) clusters can increase in size by joining with another cluster during fluid mixing, a process we refer to as ``aggregation''; and (4) clusters can be removed from the system by transiting down and out of the intestine, a process we refer to as ``expulsion''.
+
+
+
+
+Focusing first on just the growth and fragmentation processes, we identify a mapping to a well-studied stochastic process known as the Yule-Simons process, which is commonly used to understand allele frequency distributions in population genetics [REFs]. In the Yule-Simons process, organisms replicate asexually with rate $r$, and each replication has a probability $\epsilon$ of generating a neutral mutation. Exact calculations [Yule] and well-known heuristic ones [Hallatschek, WalzcakReview] show that at long times the distribution of clone frequencies is stationary with a power-law tail $p(x) \sim x^{-\mu}$ with exponent $\mu = (1+(1-\epsilon)^{-1})^{-1}$ that becomes $\mu \approx 2$ for rare mutation.
+
+In the analogy with gut bacteria, the size of mutant clones is analogous to the size of a (physical) bacterial cluster, and the mutation process that generates new clones is analogous to the fragmentation process that generates new clusters (Fig. \ref{fig:correspondance-fig}A). In applying this model to gut bacteria, we slightly modify the Yule-Simons process by decoupling fragmentation and growth for each individual cell division event. Instead of cells dividing and then becoming a mutant with probability $\epsilon$, we have separate growth and fragmentation events: cells divide within clusters at a mean rate $r$ and break out of them with a mean rate $\beta$. The asymptotic distribution of this process is the same as that for the Yule-Simons process, with $\epsilon = \beta/r$. We performed stochastic simulations of this process using a Poisson $\tau$-leaping algorithm and found a size distribution consistent with the known analytic results (Fig. \ref{fig:correspondance-fig}B). The cluster size distributions asymptotically have a power-law form with an exponent of $\mu \approx 2$ for $\beta/r \ll 1$ and then increases as $\beta$ is increased. 
+
+This model is a good candidate for a minimal process that can be used to understand gut bacterial cluster size statistics because the dynamics are consistent with experimental observations and it offers a robust mechanisms for generating power law distributions with exponent $\mu \approx 2$. However, some of the experimentally measured distributions in Fig. \ref{fig:data-fig} indicate valuse of $\mu$ less than 2, which cannot be generated by the Yule-Simons process. Moreover, in this rare fragmentation limit with small values of $\mu$, the Yule-Simons process has no mechanism for generating strain-strain differences in the exponent. Therefore, we sought modifications to the Yule-Simons process that could produce these features.% This analysis implies that any system where bacterial cells grow in clusters and fragment out of them one at a time,  will have a cluster size distribution resembling  $p(n)\sim n^{-2}$ if fragmentation is slow compared to growth.  This growth-fragmentation process may therefore explain why nearly all of the experimentally-measured cluster size distributions of Fig. \ref{fig:data-fig} are organized around the $p(n)\sim n^{-2}$ line. However, the data distributions are not precisely of this form, but exhibit clear deviations from it, most commonly a shallowing of the large-size tail. Furthermore, it is not \emph{a priori} clear how including additional relevant process---aggregation, expulsion, density-dependent growth, and spatial structure---will alter the cluster size distributions. To this end, we studied various generalizations of the model. We identified a minimal model class that can reproduce the species-specific deviations of the size distribution observed in Fig. \ref{fig:data-fig} in a manner robust to various complications.
+ 
+
+
+ 
+ 
+
+
+
+
+\subsection{Spatially-restricted fragmentation generates a power law size distribution with a rate-dependent exponent}
+The first feature of the Yule-Simons process that we revisited was the assumption that all cells in a cluster are equally likely to fragment. We posit that the geometry of gut bacterial clusters makes cells in the center of the cluster less likely to fragment than cells at the edge. We model this confinement with the parameter $\nu$, which sets how the fragmentation rate scales with cluster size, $n$, with the rate being proportional to $n^{\nu}$. Letting $c_n$ denote the number of clusters of size $n$, the dynamics of this model are governed by the master equation 
+
+
+
+%\begin{widetext}
+	\begin{align}
+	\dot{c}_n = \text{ }&\beta\left((n+1)^{\nu}c_{n+1}- n^{\nu}c_n + \delta_{n,1}\sum_m m^{\nu}c_m\right)\nonumber\\[6pt]
+	&+r\left((n-1)c_{n-1} - nc_n\right). 
+	\end{align}
+%\end{widetext}
+
+A value of $\nu = 2/3$ corresponds to only the surface of a cluster being able to fragment; a value of $\nu=1$ corresponds to the Yule-Simons process. For simplicity, we study the extreme but analytically tractable case of $\nu=0$. This choice can be interpreted as approximating a long and thin cylindrical cluster where fragmentation is more likely to happen on the ends. Such clusters are indeed observed in larval zebrafish gut, where they like form through the secretion of mucus radially inward from the intestinal wall. 
+ 
+We computed the long-time, large-size features of the size distribution for this model using a heuristic analytic calculation that is analogous to one used for the Yule-Simons process (Appendix) [REFs]. We found an asymptotic distribution with power law tail, $p(n)\sim n^{-\mu}$, with a rate-dependent exponent that is the solution to the transcedental equation
+ 
+\be
+\mu = 1 + \frac{\beta}{r}\left(1-\frac{1}{\zeta(\mu)}\right),
+\ee
+
+\noindent with $\zeta(\mu)$ the Riemann zeta function. Solving for $\mu$ numerically (Methods), we find that this analytic results agrees well with stochastic simulations (Fig. X).
+
+These results indicate that spatially-restricted fragmentation is a possible mechanism for generating the range of heavy-tailed size distributions observed in the data. However, the measured distributions are not perfect power laws, but become even shallower for large cluster sizes (Fig. X). Therefore, we constructed a generalized model that includes additional process. 
+ 
+ \begin{figure}%[h!]
+	\centerline{
+		\includegraphics[width = 3 in]{C:/Users/Brandon/Documents/Gutz/clusters/cluster_paper/figures/nu0_fig/nu0_fig.pdf}}
+	\caption{Caption.}{more caption}
+	\label{fig:nu0-fig}
+\end{figure}
+
+
+\subsection{Generalized model}
+
+\begin{figure*}%[h!]
+	\centerline{
+		\includegraphics[width = 6 in]{C:/Users/Brandon/Documents/Gutz/clusters/cluster_paper/figures/generalized-model_fig/generalized-model_fig.pdf}}
+	\caption{Caption.}{more caption}
+	\label{fig:generalized-fig}
+\end{figure*}
+
+%To efficiently explore the effects of additional processes on the cluster size distribution, we introduce the following generalized kinetic model. For small systems, the main object of the model is a set of cluster sizes, $\{n_j\}$, with $j = 1,2,3,...,M(t)$ and $M(t)$ the number of clusters in the system at time $t$. These small systems are studied via stochastic simulation.  In the large system limit, we consider the number of clusters of size $n$ denoted by $c_n(t)$. As discussed above, previous time-lapse imaging of bacteria in the zebrafish intestine revealed four distinct processes that can alter bacterial cluster sizes, which we model with four different reactions.
+
+Our generalized model, a variant of which was first introduced in [ABX], builds on equation X in 3 ways. First, we add density-dependent growth, $r\to r(1-N(t)/K)$ with $N(t)$ the total abundance at time $t$, and $K$ the global carrying capacity. Since we believe that fragmentation is linked to the cell division process, we let this density-dependence also regulate fragmentation, with $\beta\to \beta(1-N(t)/K)$. This modification of the fragmentation rate was not included in the analysis of [ABX], but we feel that it is a more realistic modeling choice. Second, we add an aggregation process, whereby two cluster join together to form a larger cluster. This interaction has been directly observed in zebrafish [ABX]. Since we believe that growth, rather than aggregation, is the dominant process for creating large clusters, we model a weak aggregation process, where the aggregation rate, $\alpha$, is independent of cluster size [RednerBook]. Finally, we add an expulsion process, by which clusters are removed from the system at a size-independent rate, $\lambda$. While this assumption of size-independence is likely incorrect, previous work showed that different choices had little effect on the size distribution; it is simply the rate at which large ($\mathcal{O}(K)$) clusters are expelled that matters. Together, these additions to the model allow for a non-trivial steady state, and we model the experimental data in this limit, allowing us to ignore time as additional parameter.
+
+%Our generalized model has four processes. First, a cluster of size $n$ can grow to size $n+1$ due to cell division within the cluster according to the growth kernel $G_n$. In contrast to the Yule-Simons process, where growth is unbounded, we use a logistic kernel with global carrying capacity, K, that sets a maximum population size,
+%\be
+%G_n = rn\left(1-\frac{N}{K}\right)
+%\ee
+%\noindent with $N = \sum_m mc_m$ the total cell density. We do not include a cell death process, but can assess its impact in an indirect way, as discussed [somewhere else].
+%
+%Second, we consider the fragmentation process. Fragmentation is defined by a kernel $F_{nm}$ that specifies the rate at which a cluster of size $n+m\ge 2$ can break apart into two smaller clusters of size $n$ and $m$. As discussed above, we focus on the process of single cells fragmenting out of larger clusters, known as a ``chipping'' kernel in the fragmentation literature [RednerBook]. This choice is realized via a Kronecker delta, $F_{nm} \propto \delta_{m,1}$. The fragmentation process is likely tied cell division, with daughter cells having a chance of breaking out of the cluster, so we take the fragmentation rate as proportional to the single cell growth rate, $F_{nm}\propto (1-N/K)$. This choice makes the fragmentation rate decrease as the system reaches its carrying capacity and cells stop dividing. However, we do not directly fragmentation and growth at the single cell level; in simulations, cells can fragment out of a cluster in the absence of growth, reducing the size of the parent cluster by one. Finally, due to spatial confinement, not all cells may be able to fragment. Therefore, we take the fragmentation rate to be proportional to the size of the cluster raised to a power, $\nu$, which takes values between 0 and 1. Putting these pieces together, we get the following fragmentation kernel:
+%
+%\be
+%F_{n,m} = \beta\delta_{m,1}(n+m)^{\nu}\left(1-\frac{N}{K}\right)
+%\ee
+%
+%\noindent with $\beta$ the intrinsic fragmentation rate.
+%
+%Third, we consider aggregation. In aggregation, a cluster of size $n$ and another of size $m$ join to form a cluster of size $n+m$ according to the aggregation kernel $A_{nm}$. When the aggregation kernel is scales strongly enough with cluster size (for example, $A_{mn} \sim mn$) systems can exhibit a non-equilibrium phase transition known as the sol-gel transition, marked by finite-time singularities representing the formation of an ``infinite'' cluster. Since we believe that growth, not aggregation, is the dominant mechanism for increasing cluster sizes, we avoid models with such behaviors and use the simple constant kernel
+%\be
+%A_{n,m} = \alpha.
+%\ee
+%\noindent The aggregation kernel is also thought of as a crude model of diffusion-mediated aggregation in three-dimensions [RednerBook]. Here, we use it for convenience, though we expect any kernel that scales weakly enough with cluster size will generate similar behaviors.
+%
+%Finally, we consider expulsion, where a cluster of size $n$ is removed from the system according to the expulsion kernel $E_n$, modeling intestinal transport. We use a size-independent rate,
+%\be
+%E_n = \lambda.
+%\ee
+%This assumption is almost certainly incorrect; larger clusters are likely to have a higher rate of expulsion than smaller ones [REFs], but the precise functional form of this relationship is unknown. As discussed below, and in recent work [ABX], the form of $E_n$ appears to have little effect on the cluster size distribution. Instead, the main role of expulsion is simply to drive the system out of equilibrium and re-establish periods of exponential growth.
+
+
+
+With these choices, the master equation becomes 
+
+\begin{widetext}
+	\begin{align*}
+	\dot{c}_n = \text{ }& \frac{\alpha}{2}\sum_{m=1}^{n} c_{n-m}c_m - \alpha c_n M + r\left(1-\frac{N}{K}\right)\left[(n-1)c_{n-1} - nc_n\right]  - \lambda c_n \nonumber\\[6pt]
+	&+\beta\left(1-\frac{N}{K}\right)\left((n+1)^{\nu}c_{n+1}- n^{\nu}c_n + \delta_{n,1}\sum_m m^{\nu}c_m\right). 
+	\end{align*}
+\end{widetext}
+
+Here, $M = \sum_n c_n$ denotes the total number of clusters, and $N = \sum_n n c_n$ denotes the total number of cells. As we are primarily interested in finite systems, where stochasticity can be important, we focus on stochastic simulations of this model. 
+
+We added weak aggregation and expulsion set by exp. values. We found that the model reproduces the range of measured distributions just by sweeping $\beta$. Other supp results.
+
+
+
+\section{Discussion}
+\newpage
+%\begin{enumerate}
+%	
+%	\item
+%	Growth: a cluster of size $n$ can grow to size $n+1$ due to cell division according to the growth kernel $G_n$. 
+%	
+%	\item
+%	Fragmentation: a cluster of size $n+m\ge 2$ can break apart into two smaller clusters of size $n$ and $m$ according to the fragmentation kernel $F_{nm}$.
+%	
+%	\item
+%	Aggregation: a cluster of size $n$ and another of size $m$ can aggregate to form a cluster of size $n+m$ according to the aggregation kernel $A_{nm}$.
+%	
+%	\item
+%	Expulsion: a cluster of size $n$ is removed from the system, according to the expulsion kernel $E_n$, modeling intestinal transport. 
+%\end{enumerate}
+%Assembling these processes, the time evolution of the cluster size distribution is given for large systems by the general master equation
+%\begin{align}
+%\dot{c}_n = \text{ }	& \frac{1}{2}\sum_{m=1}^{n} A_{n-m,m}c_{n-m}c_m - c_n\sum_{m=1}^{\infty}A_{n,m}c_m \nonumber\\
+%&+\sum_{m=n}^{\infty} F_{m-n,n}c_{m-n} - \frac{1}{2}\sum_{m = 1}^{n}F_{n-m,m}c_n \nonumber\\[6pt]
+%&+G_{n-1}c_{n-1} - G_nc_n  - E_nc_n 
+%\end{align}
+%
+%Within this general model, we began by identifying constraints on the forms of the rate kernels that allow for a cluster size distribution that decays as $n^{-2}$ in the limit of large systems, starting with the simplest models.
+% 
+%First, we deduced that aggregation is likely not the sole process pushes systems to favor large cluster sizes, but that growth must be included. This is somewhat obvious from a biological perspective, but given that the statistics of aggregation-driven models are observed in wide range of systems [REFs], it is worth discussing. It has long been known that purely aggregating systems will exhibit a power law tail of the cluster size distribution only if the aggregation rate scales quickly enough with cluster size, otherwise the distribution will fall off exponentially [RednerBook]. Specifically, if $A_{n,m} = \alpha(nm)^{\nu_A}$, a power law tail is possible only if $\nu_A > 1/2$ [RednerBook]. This type of strong size-dependence can apply to chemical reactions where molecules have a large number of reaction sites, but is unlikely to apply to bacterial cells. Further, when power-law tails do arise, their exponents are almost always to low to be consistent with the distributions in Fig. 1. For example, a purely aggregating system with $\nu_A=1$ can exhibit a power law tail with exponent $\mu = -5/2$, which is lower than we observe for gut bacteria. This model is equivalent to the Erdos-Reyni random graph model and its classical percolation transition. Adding fragmentation can change the behavior of aggregation models, but cannot generate exponents consistent with $\mu\approx -2$ [Redner1996, Vigil1984]. Constant kernel aggregation ($\nu_A = 0$) with a steady input of monomers can generate an exponent of $\mu = -3/2$, but for gut bacteria we expect that input of new cells is rare compared to fragmentation of existing clusters. 
+%
+%We next consider whether growth-driven models are consistent with the distributions in Fig. \ref{fig:data-fig}. In a recent study of linear chains of gut bacteria, it was shown that exponential growth and uniform fragmentation---where all possible fragments of the chain are weighted equally---generate an exponential tail [Bansept2018]. This particular model corresponds to the kernels $G_n = rn$ with growth rate, $r$, and $F_{mn} = \beta(m+n-1)$, with fragmentation rate, $\beta$. As this study was only focused on the statistics of linear chains, the authors further assumed that while all possible fragmentation configurations are possible, only ones resulting in a single cell remain in the system. The reasoning for this was that chains that break somewhere in their middle will likely result in two smaller chains that will rapidly aggregate into a more complicated geometrical structure. We show[?] that relaxing this assumption doesn't change the exponential tail of the size distribution [CHECK THIS]. Similarly, exponential growth with constant kernel aggregation always leads to an exponential tail [Redner1996].
+%
+%In contrast to these particle models, size distributions with exponents of $\mu \approx -2$ are common in population genetics models that describe the distribution of allele frequencies in a population.. Allele frequency distributions with this form arise in models of neutral mutations arising in exponentially growing populations, or, equivalently, beneficial mutations that sweep through constant-size populations [Hallatschek]. Such distributions are also observed in immunological systems [WalczakReview]. For example, B-cell receptors undergo rapid mutation and proliferation in response to HIV infection and the allele frequency distribution of relevant receptor sequences has $\mu \approx 2$ in a range of frequencies [Nourmohommad2018]. Translated to our system of gut bacterial clusters, we have the mapping cluster size $=$ allele frequency, fragmentation $=$ mutation. The basic model that describes this process is the Yule-Simons process, which can be described by the kernels $G_n = rn$, and $F_{nm} = \beta(n+m)\delta_{m,1}$, with $\delta_{i,j}$ the Kronecker Delta, which takes value $1$ when $i=j$, and takes value $0$ otherwise. The factor $\delta_{m,1}$ constrains fragmentation events to only involve the breaking off of a single cell, which is known as a ``chipping'' kernel in the fragmentation literature [Redner1996]. In evolutionary terms, this constraint reflects the fact that mutations arise in one individual at a time.
+%
+%The Yule-Simons process can be solved exactly [YulePaper], but the asymptotic properties of the size distribution can be obtained by well-known heuristic arguments [Hallatscheck2018,WalzcakReview]. We review this latter approach in Appendix X and also include there a generating function-based calculation that we build on below. In terms of the frequency $\tilde{n} \equiv n\e^{-rt}$ the distribution is stationary with the form
+%\be
+%p(\tilde{n}) \sim \tilde{n}^{-\left(1-\frac{1}{1-\beta/r}\right)}
+%\ee
+%
+%for large $\tilde{n}$. For rare fragmentation, this reduces to $p(n) \sim n^{-2}$.
+%
+%In the absence of additional complications, therefore, a system of gut bacteria that grow in and escape from clusters will robustly generate a power law size distribution with exponent of $\mu \approx -2$. Given the basic assumptions of this model, and the widespread observation of bacterial aggregates in intestines of diverse animal hosts, we predict that this form of size distribution will occur ubiquitously. At present, large-scale quantification of gut bacterial cluster sizes only exists for the zebrafish system, but we believe this can be extended to other systems, as elaborated in the Discussion.
+%
+%However, the distributions in Fig. \ref{fig:data-fig} are not quite the same as a simple power law. To understand these deviations, we systematically built upon this base model and studied the effects of additional processes on the cluster size distribution. These processes are: (1) finite carrying capacity, (2) expulsion, (3) aggregation, (4) spatial confinement.
+%
+%\subsection{Effects of additional processes}
+%To efficiently explore the effects of additional processes, we define a model class that is significantly constrained from the general model equation (?), but still has tuneable features. Based on the discussion above and on experimental observations, we assume the following forms for the rate kernels:
+%
+%\begin{itemize}
+%	
+%	\item
+%	Growth: we use a logistic growth kernel with global carrying capacity, K, that sets a maximum population size,
+%	\be
+%	G_n = rn\left(1-\frac{N}{K}\right)
+%	\ee
+%	\noindent with $N = \sum_m mc_m$ the total cell density.
+%	
+%	\item
+%	Fragmentation: we use a ``chipping'' kernel, in which the only fragmentation process that occurs is the breaking off of single cells (``monomers''). The fragmentation process is likely tied cell division, with daughter cells having a chance of breaking out of the cluster. However, due to spatial confinement, not all cells may be able to fragment. Therefore, we take the fragmentation rate to be proportional to the size of the cluster raised to a power, $\nu$, multiplied by the density-dependent growth rate of each cell:
+%	
+%	\be
+%	F_{n,m} = \beta\delta_{m,1}n^{\nu}\left(1-\frac{N}{K}\right)
+%	\ee
+%	
+%	\item
+%	Aggregation: we use a constant kernel
+%	\be
+%	A_{n,m} = \alpha.
+%	\ee
+%	As discussed above, we don't expect gut bacterial suspensions to exhibit the finite-time, non-equilibrium phase transitions associated strong aggregation, so choose a constant kernel for simplicity.
+%
+%	
+%	\item
+%	Expulsion: we use a size-independent rate,
+%	\be
+%	E_n = \lambda.
+%	\ee
+%	This assumption is almost certainly incorrect; larger clusters are likely to have a higher rate of expulsion than smaller ones [REFs], but the precise functional form of this relationship is unknown. As discussed below, and in recent work [ABX], the form of $E_n$ appears to have little effect on the cluster size distribution. Instead, the main role of expulsion is simply to drive the system out of equilibrium and re-establish periods of exponential growth.
+%	
+%\end{itemize}
+%
+%With these choices, the master equation becomes 
+%
+%\begin{widetext}
+%	\begin{align*}
+%	\dot{c}_n = \text{ }& \frac{\alpha}{2}\sum_{m=1}^{n} c_{n-m}c_m - \alpha c_n M + r\left(1-\frac{N}{K}\right)\left[(n-1)c_{n-1} - nc_n\right]  - \lambda c_n \nonumber\\[6pt]
+%	&+\beta\left(1-\frac{N}{K}\right)\left((n+1)^{\nu}c_{n+1}- n^{\nu}c_n + \delta_{n,1}\sum_m m^{\nu}c_m\right) 
+%	\end{align*}
+%\end{widetext}
+%
+%$\nu=0$
+%
+%Effect of $K$ for $\nu=1$: not much, get a bit of shallowing out of the tail. 
+%
+%Effect of $\lambda$: drives system out of equilibrium and preserves exponential growth-like scaling.
+%
+%Effect of $\alpha$: more shallowing.
+
+\section{Methods}
+\subsection{Data}
+
+\subsection{Stochastic simulations}
+The bacterial populations in the larval zebrafish gut whose size statistics are plotted in Fig. \ref{fig:data-fig} vary substantially in the total number of clusters present in a given animal, with numbers ranging from $\mathcal{O}(1)$ to $\mathcal{O}(10^5)$. To efficiently simulate the model in equation (?) for such a wide range of system sizes, we implemented a hybrid algorithm that combines a Langevin growth model with Poisson $\tau$-leaping for the remaining processes [tauRef]. This simulation builds off of a previous implementation [ABX], with minor modifications. 
+
+In brief, a simple fixed $\tau$ scheme is used to increment time. Within each time step, first all clusters grow according to a logistic growth equation with demographic stochasticity,
+\be
+\frac{dn_i}{dt} = rn_i\left(1-\frac{N}{K}\right) + \sigma\sqrt{rn_i\left(1-\frac{N}{K}\right)}\eta(t).
+\ee
+
+Here, $n_i$ is the size of the $i^{\text{th}}$ cluster, $N = \sum_i n_i$ is the total population abundance, and $\eta(t)$ is Gaussian white noise. The parameter $\sigma$ is used to toggle between deterministic $\sigma=0$ and stochastic $\sigma=1$ growth. For stochastic growth, this model is numerically integrated with a straightforward Euler-Marayama scheme with its own timestep $\Delta t$:
+\begin{widetext}
+\be
+n_i(t+\Delta t) = n_i(t) + \Delta t \cdot rn_i\left(1-\frac{N}{K}\right) + \sqrt{\text{max}\left(\Delta t\cdot rn_i\left(1-\frac{N}{K}\right),0\right)}\mathcal{N}(0,1),
+\ee
+\end{widetext}
+with $\mathcal{N}(0,1)$ a standard Gaussian random number. For deterministic growth, the cluster sizes are updated with the analytic solution of equation (?).
+
+After updating sizes
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\appendix
+%\section{Model}
+%
+%We consider a kinetic model of the dynamics of bacterial clusters in the intestine.  The model is non-spatial. For small systems, the main object of the model is a set of cluster sizes, $\{n_j\}$, with $j = 1,2,3,...,M(t)$ and $M(t)$ the number of clusters in the system at time $t$. These small systems are studied via direct stochastic simulation.  In the large system limit, we consider the concentration of clusters of size $n$ denoted by $c_n(t)$.  
+%
+%Based on live-imaging experiments in larval zebrafish, we identify 4 rate processes that govern cluster dynamics:
+%\begin{enumerate}
+%	
+%	\item
+%	Growth: a cluster of size $n$ can grow to size $n+1$ due to cell division according to the growth kernel $G_n$. 
+%	
+%	\item
+%	Fragmentation: a cluster of size $n+m\ge 2$ can break apart into two smaller clusters of size $n$ and $m$ according to the fragmentation kernel $F_{nm}$.
+%	
+%	\item
+%	Aggregation: a cluster of size $n$ and another of size $m$ can aggregate to form a cluster of size $n+m$ according to the aggregation kernel $A_{nm}$.
+%	
+%	\item
+%	Expulsion: a cluster of size $n$ is removed from the system, according to the expulsion kernel $E_n$, modeling intestinal transport. 
+%\end{enumerate}
+%Assembling these processes, the time evolution of the cluster size distribution is given for large systems by the general master equation
+%\begin{align}
+%\dot{c}_n = \text{ }	& \frac{1}{2}\sum_{m=1}^{n} A_{n-m,m}c_{n-m}c_m - c_n\sum_{m=1}^{\infty}A_{n,m}c_m \nonumber\\
+%&+\sum_{m=n}^{\infty} F_{m-n,n}c_{m-n} - \frac{1}{2}\sum_{m = 1}^{n}F_{n-m,m}c_n \nonumber\\[6pt]
+%&+G_{n-1}c_{n-1} - G_nc_n  - E_nc_n 
+%\end{align}
+%
+%
+%The description of gut bacterial cluster kinetics by these 4 processes is not the only possible one. This particular decomposition has the advantage of separating reactions based on how they alter the total number of clusters, $M$, and the total number of cells, $N$: growth increases $N$ while not affecting $M$; fragmentation increases $M$ while not affecting $N$; aggregation decreases $M$ while not affecting $N$, and expulsion decreases both $N$ and $M$. We ignore cell death, which would decrease $N$ while not affecting $M$ (for clusters of size 2 or larger). Another advantage of this decomposition is that it contains as subsets several established kinetic models: considering only aggregation and fragmentation results in a well-studied model class that forms the basis of sol-gel systems and polymer physics; considering only growth and fragmentation results in a model class that can be mapped to models of population genetics, with cluster size being analogous to allele frequency and fragmentation analogous to a mutation process that generates new alleles. This analogy will become relevant below. 
+%
+%
+%\subsection{Choosing rate kernels}
+%Known results for the cluster size distribution in various subsets of this model can be used to immediately constrain the forms of rate kernels that are consistent with the experimentally measured size distributions in Fig. 1. In our survey of 9 different bacterial strains colonizing otherwise germ-free larval zebrafish, we observe broad-tailed cluster size distributions, that are roughly consistent with a power-law decay that then becomes even shallower in a species-dependent manner. The form of the initial decay is consistent with $p(n) \sim n^{-2}$ for nearly all strains. Based on analytic calculations done in the limit of large system sizes (we consider finite system effects below), this slow decay of the size distribution is inconsistent with several model subsets.
+%
+%First, we deduce that aggregation is likely not the sole process pushes systems to favor large cluster sizes, but that growth must be included. This is somewhat obvious from a biological perspective, but given that the statistics of aggregation-driven models are observed in wide range of systems [REFs], it is worth discussing. It has long been known that purely aggregating systems will exhibit a power law tail of the cluster size distribution only if the aggregation rate scales quickly enough with cluster size, otherwise the distribution will fall off exponentially [RednerBook]. Specifically, if $A_{n,m} = \alpha(nm)^{\nu_A}$, a power law tail is possible only if $\nu_A > 1/2$ [RednerBook]. This type of strong size-dependence can apply to chemical reactions where molecules have a large number of reaction sites, but is unlikely to apply to bacterial cells. Further, when power-law tails do arise, their exponents are almost always to low to be consistent with the distributions in Fig. 1. For example, a purely aggregating system with $\nu_A=1$ can exhibit a power law tail with exponent $\mu = -5/2$, which is lower than we observe for gut bacteria. This model is equivalent to the Erdos-Reyni random graph model and its classical percolation transition. Adding fragmentation can change the behavior of aggregation models, but cannot generate exponents consistent with $\mu\approx -2$ [Redner1996, Vigil1984]. Of note, constant kernel aggregation ($\nu_A = 0$) with a steady input of monomers can generate an exponent of $\mu = -3/2$, but for gut bacteria we expect that input of new cells is rare compared to fragmentation of existing clusters. 
+
+%We next consider whether growth-driven models are consistent with the distributions in Fig. 1. In a recent study of linear chains of gut bacteria, it was shown that exponential growth and uniform fragmentation---where all possible fragments of the chain are weighted equally---generate an exponential tail [Bansept2018]. This particular model corresponds to the kernels $G_n = rn$ with growth rate, $r$, and $F_{mn} = \beta(m+n-1)$, with fragmentation rate, $\beta$. As this study was only focused on the statistics of linear chains, the authors further assumed that while all possible fragmentation configurations are possible, only ones resulting in a single cell remain in the system. The reasoning for this was that chains that break somewhere in their middle will likely result in two smaller chains that will rapidly aggregate into a more complicated geometrical structure. We show[?] that relaxing this assumption doesn't change the exponential tail of the size distribution [CHECK THIS]. Similarly, exponential growth with constant kernel aggregation always leads to an exponential tail [Redner1996].
+%
+%While size distributions with exponents of $\mu \approx -2$ appear to be rare in traditional soft-matter systems, they are in fact  common in population genetics. Allele frequency distributions with this form arise in models of neutral mutations arising in exponentially growing populations, or, equivalently, beneficial mutations that sweep through constant-size populations [Hallatschek]. Such distributions are also observed in immunological systems [WalczakReview]. For example, B-cell receptors undergo rapid mutation and proliferation in response to HIV infection and the allele frequency distribution of relevant receptor sequences has $\mu \approx 2$ in a range of frequencies [Nourmohommad2018]. Translated to our system of gut bacterial clusters, we have the mapping cluster size $=$ allele frequency, fragmentation $=$ mutation. The basic model that describes this process is the Yule-Simons process, which can be described by the kernels $G_n = rn$, and $F_{nm} = \beta(n+m)\delta_{m,1}$, with $\delta_{i,j}$ the Kronecker Delta, which takes value $1$ when $i=j$, and takes value $0$ otherwise. The factor $\delta_{m,1}$ constrains fragmentation events to only involve the breaking off of a single cell, which is known as a ``chipping'' kernel in the fragmentation literature [Redner1996]. In evolutionary terms, this constraint reflects the fact that mutations arise in one individual at a time.
+%
+%The Yule-Simons process can be solved exactly [YulePaper], but the asymptotic form of the cluster size distribution can be obtained through a simpler heuristic calculation [see, e.g, WalczakReview, Hallatschek2018]. For completeness, we repeat this calculation here, following the derivation in [WalczakReview] but using our notation, and modify it later to study other models. The key to this calculation is note that, since in this simplified model populations continue to grow exponentially for all of time, the total number of clusters present at the time of a new fragmentation event, $M(t)$, is a proxy for this newest clusters' rank. For example, the $5^{\text{th}}$ cluster to be generated will be the $5^{\text{th}}$ largest cluster, with 4 clusters having a larger size. Consequently, for large sizes, the total number of clusters, $M(t)$, is proportional to the cumulative distribution function, $M \propto P(\text{size} > n)$. For power law distributions, this relationship is often discussed in the context of Ziph's law  [WalczakReview]. The total number of clusters can be related to a cluster sizes as follows: a cluster that was generated at time $t'$ will at a later time $t$ have a size
+%\be
+%n(t,t') = \e^{(r-\beta)(t-t')}.
+%\ee	
+%The total number of clusters is governed by
+%\be
+%\frac{dM}{dt} = \beta (N(t)-c_1(t)),
+%\ee
+%where $c_1(t)$ is the number of single cells and $N(t)$ is the total number of cells, which grows as $N(t) = \exp(rt)$. At long times, we ignore the $c_1$ term and find that
+%\be
+%M(t) =  M_0 + \frac{\beta}{r}\left(\e^{rt} -1\right) \propto \e^{rt}.
+%\ee
+%Consequently, we can relate scaled cluster size, or frequency, $\tilde{n}(t') \equiv n/\exp(rt)$, to $M(t')$ by
+%\bea 
+%\tilde{n}(t') &\equiv& n(t,t')\e^{-rt} \nonumber\\
+%&\sim&  \e^{-(r-\beta)t'}\nonumber\\
+%&=& [\e^{rt'}]^{-(1-\beta/r)}\nonumber\\
+%&\sim& [M(t')]^{-(1-\beta/r)}.
+%\eea
+%Inverting this relationship, we find that
+%\be
+%M(n) \sim P(\text{size}>n) \sim n^{-\frac{1}{(1-\beta/r)}}.
+%\ee
+%Differentiating with respect to $n$ we get an expression for the probability density function, $p(n)$,
+%\be
+%p(n) \sim n^{-\left(1+\frac{1}{(1-\beta/r)}\right)},
+%\ee
+%which, for rare fragmentation, limits to
+%\be
+%p(n) \sim n^{-2}.
+%\ee
+%In summary, we see that a simplified model of exponential growth with rare, single cell fragmentation robustly generates a cluster size distribution that decays in a manner consistent with the experimentally observed distributions in Fig. 1, up to a point. The experimental distributions exhibit a shallowing of the large-size tail not captured by this simple model. We now proceed to investigate the effects of additional processes on the size distribution. These effects are: (1) a fragmentation rate that scales more weakly with cluster size, reflecting that fact that cells in the interior of a cluster may not be able to fragment; (2) a finite carrying capacity that limits growth; (3) loss of clusters due to expulsion; (4) aggregation; and (5) fluctuations due to finite system size. 
+%
+%
+%\subsection{Effects of additional processes}
+%
+%To efficiently explore the effects of additional processes, we define a model class that is significantly constrained from the general model equation (?), but still has tuneable features. Based on the discussion above and on experimental observations, we assume the following forms for the rate kernels:
+%
+%\begin{itemize}
+%	
+%	\item
+%	Growth: we use a logistic growth kernel with global carrying capacity, K,
+%	\be
+%	G_n = rn\left(1-\frac{N}{K}\right)
+%	\ee
+%	
+%	\item
+%	Fragmentation: we use a ``chipping'' kernel, in which the only fragmentation process that occurs is the breaking off of single cells (``monomers''). The fragmentation process is thought to be tied to cell division, with daughter cells having a chance of breaking out of the cluster. However, due to spatial confinement, not all cells may be able to fragment. Therefore, we take the fragmentation rate to be proportional to the size of the cluster raised to a power, $\nu$, multiplied by the density-dependent growth rate of each cell:
+%	
+%	\be
+%	F_{n,m} = \beta\delta_{m,1}n^{\nu}\left(1-\frac{N}{K}\right)
+%	\ee
+%	
+%	\item
+%	Aggregation: we use a constant kernel
+%	\be
+%	A_{n,m} = \alpha.
+%	\ee
+%	
+%	\noindent with $N = \sum_m mc_m$ the total cell density.
+%	
+%	\item
+%	Expulsion: we use a constant kernel
+%	
+%	\be
+%	E_n = \lambda
+%	\ee
+%\end{itemize}
+%
+%With these choices, the master equation becomes 
+%
+%\begin{widetext}
+%	\begin{align*}
+%	\dot{c}_n = \text{ }& \frac{\alpha}{2}\sum_{m=1}^{n} c_{n-m}c_m - \alpha c_n M + r\left(1-\frac{N}{K}\right)\left[(n-1)c_{n-1} - nc_n\right]  - \lambda c_n \nonumber\\[6pt]
+%	&+\beta\left(1-\frac{N}{K}\right)\left((n+1)^{\nu}c_{n+1}- n^{\nu}c_n + \delta_{n,1}\sum_m m^{\nu}c_m\right) 
+%	\end{align*}
+%\end{widetext}
+%
+%
+%\subsubsection{Spatially confined clusters}
+%
+%The geometry of gut bacterial clusters almost certainly makes cells in the center of the cluster less likely to fragment than cells at the edge. We model this confinement with the parameter $\nu$, which sets how the fragmentation rate scales with cluster size, $n$, with the rate being proportional to $n^{\nu}$. A value of $\nu = 2/3$ would correspond to only the surface of a cluster being able to fragment. For simplicity, we study the extreme but analytically tractable case of $\nu=0$. In fact, this choice is perhaps not unrealistic: clusters in the gut get compressed by the secretion of mucus radially inward from the intestinal wall, leading to long, cylindrical clusters. If mucus entrapment suppresses fragmentation, then the cells most likely to fragment would be at the tips of the cylinder, a region whose size scales weakly with total cluster size for long clusters.  
+%
+%We proceed with an analogous calculation as above for the Yule-Simons process, which corresponds to $\nu=1$. As above, we ignore for the moment a finite carrying capacity ($K \to \infty$), aggregation ($\alpha=0$), and expulsion, $\lambda=0$. 
+%
+%The total number of clusters follows
+%\be
+%\dot{M} = \beta(M - c_1),
+%\ee
+%Now we can't justifiably ignore $c_1$, since we expect it to be an $\mathcal{O}(1)$ fraction of $M$. However, we'll first ignore it, study the result, and then go back and correct for our approximation.
+%
+%Ignoring the $c_1$ term, we then have
+%\be
+%N(t) \sim M^{r/\beta}
+%\ee
+%A single cell that fragmented off of another cluster at time $t'$, will have a size at time $t$ of
+%\be
+%n(t,t') \sim \e^{r(t-t')}, 
+%\ee
+%or in terms of a scaled size, or frequency, $\tilde{n} = n/e^{rt}$,
+%\be
+%\tilde{n} \sim M(t')^{-r/\beta},
+%\ee
+%which implies a probability density
+%\be
+%p(n) \sim n^{-(1 + \beta/r)}.
+%\ee
+%Now we see that for $\nu=0$ we get a tuneable, rate-dependent exponent, that can approach a value as high as $-1$.
+%To correct for $c_1$, we can make a power law ansatz...
+%
+%Upshot: to get a distribution that scales as $n^{-2}$, the $\nu=0$ model requires that the fragmentation parameter $\beta$ be tuned to be $\approx r$, while in the $\nu=1$ model, this size distribution occurs generally for rare fragmentation.
+
+
+\end{document}
